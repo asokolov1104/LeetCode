@@ -20,9 +20,9 @@ public:
 	// and assign must do nothing.
 	void assign(K const& keyBegin, K const& keyEnd, V const& val) {
 		// INSERT YOUR SOLUTION HERE
+		if ((m_map.size() == 0) && (val == m_valBegin))
+			return;
 		if (keyBegin < keyEnd) {	//	interval not empty
-			//m_map[keyBegin] = val;
-			//m_map[keyEnd] = m_valBegin;
 			auto upp_it = m_map.upper_bound(keyEnd);	//	iterator to the first element greater than the given key
 			auto low_it = m_map.lower_bound(keyBegin);	//	iterator to the first element not less than the given key
 			if (upp_it == m_map.begin()) {
@@ -37,10 +37,32 @@ public:
 				else {
 					m_map[keyEnd] = (--upp_it)->second;
 					m_map[keyBegin] = val;
-					m_map.erase(low_it, ++upp_it);
+					if (upp_it->first < keyEnd)
+						++upp_it;
+					if (low_it->first > keyBegin) {
+					}
+					else
+						++low_it;
+					m_map.erase(low_it, upp_it);
 				}
 			}
+			//	remove duplicates secondary values
 
+			if (m_map.size() > 1) {
+				auto prev = m_map.begin();
+				auto it = prev;
+				++it;
+				while (it != m_map.end())
+				{
+					if (it->second == prev->second) {
+						it = m_map.erase(it);
+					}
+					else {
+						prev = it;
+						++it;
+					}
+				}
+			}
 		}
 	}
 
@@ -68,6 +90,7 @@ auto main() -> int {
 	int idx[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 };
 
 	//
+	if (false)
 	{
 		interval_map<int, char> task('C');
 
@@ -98,12 +121,124 @@ auto main() -> int {
 				std::cout << task[val] << ' ';
 			}
 			std::cout << std::endl;
-		task.assign(9, 19, 'B');
+		task.assign(12, 17, 'B');
+			for (auto& val : idx) {
+				std::cout << task[val] << ' ';
+			}
+			std::cout << std::endl;
+		task.assign(20, 5, '1');
 			for (auto& val : idx) {
 				std::cout << task[val] << ' ';
 			}
 			std::cout << std::endl;
 
+	}
+
+	std::cout << std::endl;
+	//
+	{
+		interval_map<int, char> task('0');
+
+		task.assign(1, 4, 'A');
+		for (auto& val : idx) {
+			std::cout << task[val] << ' ';
+		}
+		std::cout << std::endl;
+		task.assign(3, 6, 'B');
+		for (auto& val : idx) {
+			std::cout << task[val] << ' ';
+		}
+		std::cout << std::endl;
+		task.assign(5, 8, 'C');
+		for (auto& val : idx) {
+			std::cout << task[val] << ' ';
+		}
+		std::cout << std::endl;
+		task.assign(4, 8, 'E');
+		for (auto& val : idx) {
+			std::cout << task[val] << ' ';
+		}
+		std::cout << std::endl;
+
+	}
+
+	std::cout << std::endl;
+	//
+	{
+		interval_map<int, char> task('0');
+
+		task.assign(12, 15, 'A');
+		for (auto& val : idx) {
+			std::cout << task[val] << ' ';
+		}
+		std::cout << std::endl;
+		task.assign(11, 14, 'B');
+		for (auto& val : idx) {
+			std::cout << task[val] << ' ';
+		}
+		std::cout << std::endl;
+		task.assign(10, 13, 'C');
+		for (auto& val : idx) {
+			std::cout << task[val] << ' ';
+		}
+		std::cout << std::endl;
+		task.assign(10, 13, 'E');
+		for (auto& val : idx) {
+			std::cout << task[val] << ' ';
+		}
+		std::cout << std::endl;
+
+	}
+
+	std::cout << std::endl;
+	//
+	{
+		interval_map<int, char> task('0');
+
+		task.assign(1, 3, '0');
+		for (auto& val : idx) {
+			std::cout << task[val] << ' ';
+		}
+		std::cout << std::endl;
+
+		task.assign(3, 5, 'A');
+		for (auto& val : idx) {
+			std::cout << task[val] << ' ';
+		}
+		std::cout << std::endl;
+
+		task.assign(5, 7, 'A');
+		for (auto& val : idx) {
+			std::cout << task[val] << ' ';
+		}
+		std::cout << std::endl;
+
+	}
+
+	if (false)
+	{
+		std::map<int, int> m_map;
+		m_map[1] = 1;
+		m_map[2] = 1;
+		m_map[3] = 3;
+		m_map[5] = 3;
+
+		if (m_map.size() > 1) {
+			auto prev = m_map.begin();
+			auto it = prev;
+			++it;
+			while (it != m_map.end())
+			{
+				if (it->second == prev->second) {
+					it = m_map.erase(it);
+				}
+				else {
+					prev = it;
+					++it;
+				}
+					
+			}
+		}
 	}
 
 	//
